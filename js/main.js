@@ -1,48 +1,38 @@
-const inventory = ["Manzana", "Pan", "Leche", "Arroz", "Cafe"];
-const report = document.querySelector("#inventory-report");
-const operationMessage = document.querySelector("#operation-message");
-const searchForm = document.querySelector("#search-form");
-const searchInput = document.querySelector("#product-search");
-const searchResult = document.querySelector("#search-result");
+const productos = ["Manzana", "Pan", "Leche", "Arroz", "Cafe"];
 
-inventory.push("Huevos");
-inventory.unshift("Aceite");
+productos.push("Huevos");
+productos.unshift("Aceite");
 
-const removedProduct = inventory.pop();
-operationMessage.textContent = `Se ha eliminado el elemento: ${removedProduct}`;
+const productoEliminado = productos.pop();
+document.querySelector("#operation-message").textContent =
+	`Se ha eliminado el elemento: ${productoEliminado}`;
 
-const productIndexToUpdate = inventory.indexOf("Arroz");
-if (productIndexToUpdate !== -1) {
-	inventory.splice(productIndexToUpdate, 1, "Arroz integral");
+productos[1] = "Pan casero";
+
+const indiceArroz = productos.indexOf("Arroz");
+productos.splice(indiceArroz, 1, "Arroz integral");
+
+const productoBuscado = "Leche";
+const productoExiste = productos.includes(productoBuscado);
+const resultadoBusqueda = document.querySelector("#search-result");
+
+if (productoExiste) {
+	const indiceProducto = productos.indexOf(productoBuscado);
+	resultadoBusqueda.textContent =
+		`${productoBuscado} existe y esta en el indice ${indiceProducto}.`;
+} else {
+	resultadoBusqueda.textContent = `${productoBuscado} no esta en la lista.`;
 }
 
-function showInventory() {
-	report.innerHTML = "";
+function mostrarProductos() {
+	const lista = document.querySelector("#inventory-report");
 
-	for (const product of inventory) {
-		const listItem = document.createElement("li");
-		listItem.textContent = `Producto: ${product}`;
-		report.append(listItem);
+	for (const producto of productos) {
+		const elemento = document.createElement("li");
+		elemento.textContent = `Producto: ${producto}`;
+		lista.append(elemento);
 	}
 }
 
-function searchProduct(productName) {
-	const normalizedName = productName.trim();
-	const productExists = inventory.includes(normalizedName);
-
-	if (productExists) {
-		const productIndex = inventory.indexOf(normalizedName);
-		searchResult.textContent = `${normalizedName} existe y se encuentra en el indice ${productIndex}.`;
-	} else {
-		searchResult.textContent = `${normalizedName} no se encuentra en el inventario.`;
-	}
-}
-
-searchForm.addEventListener("submit", (event) => {
-	event.preventDefault();
-	searchProduct(searchInput.value);
-});
-
-showInventory();
-console.log("Inventario inicializado:", inventory);
-console.log(operationMessage.textContent);
+mostrarProductos();
+console.log("Lista final:", productos);
